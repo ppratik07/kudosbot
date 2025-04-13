@@ -13,3 +13,13 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Kudos {
+  id          String   @id @default(uuid())
+  senderId    String
+  recipientId String
+  message     String
+  kudosType   String
+  visibility  String
+  createdAt   DateTime @default(now())
+}
