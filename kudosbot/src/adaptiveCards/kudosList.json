@@ -1,0 +1,33 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.3",
+    "body": [
+      {
+        "type": "TextBlock",
+        "text": "Your Kudos",
+        "weight": "bolder",
+        "size": "medium"
+      },
+      {
+        "type": "Container",
+        "items": [
+          {
+            "type": "TextBlock",
+            "text": "${if(received.length > 0, 'Received Kudos:', 'No kudos received yet.')}",
+            "weight": "bolder"
+          },
+          {
+            "type": "FactSet",
+            "facts": [
+              {
+                "$data": "${received}",
+                "title": "From ${sender}: ${kudosType}",
+                "value": "${message} (${createdAt})"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
