@@ -1,0 +1,51 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Send Kudos",
+            "weight": "bolder",
+            "size": "medium"
+        },
+        {
+            "type": "Input.Text",
+            "id": "recipient",
+            "placeholder": "Recipient's name or email",
+            "isRequired": true
+        },
+        {
+            "type": "Input.ChoiceSet",
+            "id": "kudosType",
+            "choices": [
+                { "title": "Thank You", "value": "Thank You" },
+                { "title": "Great Job", "value": "Great Job" },
+                { "title": "Impressive", "value": "Impressive" }
+            ],
+            "isRequired": true,
+            "style": "compact"
+        },
+        {
+            "type": "Input.Text",
+            "id": "message",
+            "placeholder": "Your message",
+            "isMultiline": true,
+            "isRequired": true
+        },
+        {
+            "type": "Input.Toggle",
+            "id": "visibility",
+            "title": "Make public (post to channel)",
+            "valueOn": "public",
+            "valueOff": "private"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Send Kudos",
+            "data": { "action": "sendKudos" }
+        }
+    ]
+}
