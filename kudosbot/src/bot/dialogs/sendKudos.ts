@@ -1,8 +1,11 @@
 import { ComponentDialog, WaterfallDialog, WaterfallStepContext } from 'botbuilder-dialogs';
 import { CardFactory } from 'botbuilder';
-import * as kudosForm from '.../../`adaptiveCards/kudosForm.json';
-import { GraphService } from '../../services/graphService';
-import { PrismaService } from '../../services/prismaService';
+import * as kudosForm from '../../adaptiveCards/kudosForm.json';
+import { GraphService } from '../services/graphService';
+import { PrismaService } from '../services/prismaService';
+
+// Type assertion to ensure compatibility
+const kudosFormCard: any = kudosForm;
 
 const SEND_KUDOS_DIALOG = 'sendKudosDialog';
 
@@ -22,7 +25,7 @@ export class SendKudosDialog extends ComponentDialog {
 
   async promptForm(step: WaterfallStepContext) {
     await step.context.sendActivity({
-      attachments: [CardFactory.adaptiveCard(kudosForm)],
+      attachments: [CardFactory.adaptiveCard(kudosFormCard)],
     });
     return step.endDialog();
   }
