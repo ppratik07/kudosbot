@@ -1,13 +1,17 @@
-import { ComponentDialog, WaterfallDialog, WaterfallStepContext } from 'botbuilder-dialogs';
-import { CardFactory } from 'botbuilder';
-import * as kudosForm from '../../adaptiveCards/kudosForm.json';
-import { GraphService } from '../services/graphService';
-import { PrismaService } from '../services/prismaService';
+import {
+  ComponentDialog,
+  WaterfallDialog,
+  WaterfallStepContext,
+} from "botbuilder-dialogs";
+import { CardFactory } from "botbuilder";
+import * as kudosForm from "../../adaptiveCards/kudosForm.json";
+import { GraphService } from "../services/graphService";
+import { PrismaService } from "../services/prismaService";
 
 // Type assertion to ensure compatibility
 const kudosFormCard: any = kudosForm;
 
-const SEND_KUDOS_DIALOG = 'sendKudosDialog';
+const SEND_KUDOS_DIALOG = "sendKudosDialog";
 
 export class SendKudosDialog extends ComponentDialog {
   private prismaService: PrismaService;
@@ -32,8 +36,8 @@ export class SendKudosDialog extends ComponentDialog {
 
   async processForm(step: WaterfallStepContext) {
     const formData = step.context.activity.value;
-    if (!formData || formData.action !== 'sendKudos') {
-      await step.context.sendActivity('Kudos submission cancelled.');
+    if (!formData || formData.action !== "sendKudos") {
+      await step.context.sendActivity("Kudos submission cancelled.");
       return step.endDialog();
     }
 
@@ -41,21 +45,28 @@ export class SendKudosDialog extends ComponentDialog {
     const senderId = step.context.activity.from.aadObjectId;
 
     // Mock GraphService for user lookup (replace with actual token logic)
-    const graphService = new GraphService('mock-token');
+    const graphService = new GraphService("mock-token");
     const recipientId = await graphService.getUserId(recipient);
 
     if (!recipientId) {
-      await step.context.sendActivity('Recipient not found. Please check the name or email.');
+      await step.context.sendActivity(
+        "Recipient not found. Please check the name or email."
+      );
       return step.endDialog();
     }
-
+    if (!senderId) {
+      await step.context.sendActivity(
+        "SenderId not found. Please check the name or email."
+      );
+      return step.endDialog();
+    }
     // Save kudos
     await this.prismaService.saveKudos({
       senderId,
       recipientId,
       kudosType,
       message,
-      visibility: visibility || 'private',
+      visibility: visibility || "private",
     });
 
     // Notify sender
@@ -63,17 +74,17 @@ export class SendKudosDialog extends ComponentDialog {
 
     // Notify recipient (simplified; use Teams/Outlook APIs for actual notifications)
     await step.context.sendActivity({
-      type: 'message',
+      type: "message",
       text: `You received kudos from ${step.context.activity.from.name} for ${kudosType}: ${message}`,
       channelData: { channelId: recipientId }, // Adjust for Teams DM
     });
 
     // Post to channel if public
-    if (visibility === 'public') {
+    if (visibility === "public") {
       await step.context.sendActivity({
-        type: 'message',
+        type: "message",
         text: `🎉 ${step.context.activity.from.name} gave kudos to ${recipient} for ${kudosType}: ${message}`,
-        channelData: { channelId: 'your-channel-id' }, // Replace with actual channel
+        channelData: { channelId: "your-channel-id" }, // Replace with actual channel
       });
     }
 

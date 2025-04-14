@@ -1,8 +1,8 @@
 import { ComponentDialog, WaterfallDialog, WaterfallStepContext } from 'botbuilder-dialogs';
 import { CardFactory } from 'botbuilder';
 import * as kudosList from '../../adaptiveCards/kudosList.json';
-import { PrismaService } from '../../services/prismaService';
-import { GraphService } from '../../services/graphService';
+import { PrismaService } from '../services/prismaService';
+import { GraphService } from '../services/graphService';
 
 const VIEW_KUDOS_DIALOG = 'viewKudosDialog';
 
@@ -21,6 +21,10 @@ export class ViewKudosDialog extends ComponentDialog {
 
   async showKudos(step: WaterfallStepContext) {
     const userId = step.context.activity.from.aadObjectId;
+    if(userId === null || userId === undefined){
+      await step.context.sendActivity('User ID not found. Please check your credentials.');
+      return step.endDialog();
+    }
     const kudos = await this.prismaService.getKudos(userId);
 
     // Mock GraphService for name lookup
