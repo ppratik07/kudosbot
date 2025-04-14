@@ -1,0 +1,41 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.11/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.11",
+    "id": "yb97c2de9-260c-427d-bf1e-c6f4a158b54f",
+    "version": "1.0.0",
+    "packageName": "com.teams.kudosbot",
+    "developer": {
+      "name": "Your Name",
+      "websiteUrl": "https://www.microsoft.com",
+      "privacyUrl": "https://www.microsoft.com/privacy",
+      "termsOfUseUrl": "https://www.microsoft.com/terms"
+    },
+    "name": {
+      "short": "KudosBot",
+      "full": "Kudos Recognition Bot"
+    },
+    "description": {
+      "short": "Send and view kudos",
+      "full": "Recognize colleagues with kudos in Teams."
+    },
+    "bots": [
+      {
+        "botId": "b97c2de9-260c-427d-bf1e-c6f4a158b54f",
+        "scopes": ["personal", "team", "groupchat"],
+        "commandLists": [
+          {
+            "scopes": ["personal", "team"],
+            "commands": [
+              { "title": "send kudos", "description": "Send kudos to a colleague" },
+              { "title": "view kudos", "description": "View your kudos" }
+            ]
+          }
+        ]
+      }
+    ],
+    "icons": {
+      "outline": "icon-outline.png",
+      "color": "icon-color.png"
+    },
+    "accentColor": "#FFFFFF"
+  }

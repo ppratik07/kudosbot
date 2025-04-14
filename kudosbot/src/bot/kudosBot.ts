@@ -1,4 +1,4 @@
-import { ActivityHandler, BotState, ConversationState, MemoryStorage } from 'botbuilder';
+import { ActivityHandler, BotState, ConversationState, MemoryStorage, StatePropertyAccessor } from 'botbuilder';
 import { DialogSet, DialogState } from 'botbuilder-dialogs';
 import { SendKudosDialog } from './dialogs/sendKudos';
 import { ViewKudosDialog } from './dialogs/viewKudos';
@@ -6,7 +6,7 @@ import { ViewKudosDialog } from './dialogs/viewKudos';
 export class KudosBot extends ActivityHandler {
   private conversationState: ConversationState;
   private dialogSet: DialogSet;
-  private dialogState: BotState;
+  private dialogState: StatePropertyAccessor<DialogState>;
 
   constructor() {
     super();
