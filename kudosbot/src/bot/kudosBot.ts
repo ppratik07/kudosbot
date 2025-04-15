@@ -1,4 +1,4 @@
-import { ActivityHandler, BotState, ConversationState, MemoryStorage, StatePropertyAccessor } from 'botbuilder';
+import { ActivityHandler, BotState, ConversationState, MemoryStorage } from 'botbuilder';
 import { DialogSet, DialogState } from 'botbuilder-dialogs';
 import { SendKudosDialog } from './dialogs/sendKudos';
 import { ViewKudosDialog } from './dialogs/viewKudos';
@@ -6,19 +6,21 @@ import { ViewKudosDialog } from './dialogs/viewKudos';
 export class KudosBot extends ActivityHandler {
   private conversationState: ConversationState;
   private dialogSet: DialogSet;
-  private dialogState: StatePropertyAccessor<DialogState>;
+  private dialogState: BotState;
 
   constructor() {
     super();
-    // Use in-memory storage for development; replace with Cosmos DB for production
     const memoryStorage = new MemoryStorage();
     this.conversationState = new ConversationState(memoryStorage);
+    //@ts-ignore
     this.dialogState = this.conversationState.createProperty<DialogState>('DialogState');
+    //@ts-ignore
     this.dialogSet = new DialogSet(this.dialogState);
     this.dialogSet.add(new SendKudosDialog());
     this.dialogSet.add(new ViewKudosDialog());
 
     this.onMessage(async (context, next) => {
+      console.log('Incoming activity:', JSON.stringify(context.activity, null, 2));
       const text = context.activity.text?.toLowerCase().trim();
       const dialogContext = await this.dialogSet.createContext(context);
 
